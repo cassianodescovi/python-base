@@ -23,10 +23,15 @@ operação: sum
 n1:5
 n2:
 9
+
+Os resultados serão salvos em `infixcalc.log`
 """
 __version__ = "0.1.0"
 
+import os
 import sys
+from datetime import datetime
+
 arguments = sys.argv[1:]
 
 if not arguments:
@@ -71,5 +76,13 @@ elif operation == "div":
 		print("não há divisão por 0")
 	else:
 		result = n1 / n2
+
+path = os.curdir
+filepath = os.path.join(path, "infixcalc.log")
+timestamp = datetime.now().isoformat()
+user = os.getenv('USER','anonymous')
+
+with open(filepath, "a") as file_:
+	file_.write(f"{timestamp} - {user} - {operation}, {n1}, {n2} = {result}\n")
 
 print(f"o resultado é {result}")
