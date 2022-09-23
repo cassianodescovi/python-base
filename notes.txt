@@ -1,0 +1,7 @@
+primeira anotacao	tech	python is good
+segunda anotacao	tech	agro is tech
+Repeticoesn	python	While e for pra repeticoes
+Testn	python	testando
+Fomen	Bandejao	porco
+Testandon	python	break test
+Testandon	python	test break
