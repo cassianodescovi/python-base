@@ -89,6 +89,6 @@ disponivel = quarto[num_quarto]['disponivel']
 total = preco_quarto * dias
 
 with open("reserva.txt", "a") as file_:
-    file_.write(f"{nome},{num_quarto},{dias}\n")
+    file_.write(f"{nome},{num_quarto},{dias}\")
 
 print(f"{nome} voce escolheu o quarto {nome_quarto} e vai custar: R${total:.2f}")

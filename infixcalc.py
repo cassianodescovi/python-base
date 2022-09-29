@@ -32,9 +32,21 @@ import os
 import sys
 from datetime import datetime
 
-while True:
-	arguments = sys.argv[1:]
+arguments = sys.argv[1:]
 
+valid_operations = {
+	"sum": lambda a, b: a + b, 
+	"sub": lambda a, b: a - b, 
+	"mul": lambda a, b: a * b, 
+	"div": lambda a, b: a / b,
+	}
+
+path = os.curdir
+filepath = os.path.join(path, "infixcalc.log")
+timestamp = datetime.now().isoformat()
+user = os.getenv('USER','anonymous')
+
+while True:
 	if not arguments:
 	    operation = input("choose the operation (sum, sub, mul div): ")
 	    n1 = input("n1: ")
@@ -47,7 +59,6 @@ while True:
 
 	operation, *nums = arguments
 
-	valid_operations = ("sum", "sub", "mul", "div")
 	if operation not in valid_operations:
 		print("Operação inválida")
 		print(valid_operations)
@@ -64,35 +75,25 @@ while True:
 			num = int(num)
 		validated_nums.append(num)
 
-	n1, n2 = validated_nums
+	try:
+		n1, n2 = validated_nums
+	except ValueError as e:
+		print(str(e))
+		sys.exit(1)
 
-	if operation == "sum":
-		result = n1 + n2
-	elif operation == "sub":
-		result = n1 - n2
-	elif operation == "mul":
-		result = n1 * n2
-	elif operation == "div":
-		if n2 == 0:
-			print("não há divisão por 0")
-			sys.exit(1)
-		else:
-			result = n1 / n2
-
+	result = valid_operations[operation](n1, n2)
 	print(f"o resultado é {result}")
 	
-	path = os.curdir
-	filepath = os.path.join(path, "infixcalc.log")
-	timestamp = datetime.now().isoformat()
-	user = os.getenv('USER','anonymous')
-
+	
 	try:
-		with open(filepath, "a") as file_:
-			file_.write(f"{timestamp} - {user} - {operation}, {n1}, {n2} = {result}\n")
+		with open(filepath, "a") as log:
+			log.write(f"{timestamp} - {user} - {operation}, {n1}, {n2} = {result}\n")
 	except PermissionError as e:
 		#TODO: logging
 		print(str(e))
 		sys.exit(1)
+	
+	arguments = None
 	
 	if input("Pressione enter para continuar ou qualquer tecla pra sair"):
 		break
